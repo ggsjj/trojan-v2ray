@@ -2,6 +2,8 @@
 手工安装
 
 
+
+
 v2ray 要先改时区
 
 cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
@@ -53,7 +55,7 @@ systemctl restart nginx.service   重启NG
 
 
 =================================================
-
+```bash
 
 curl  https://get.acme.sh | sh
 alias acme.sh=~/.acme.sh/acme.sh
@@ -70,8 +72,9 @@ acme.sh --list
 # 删除证书
 acme.sh remove <SAN_Domains>
 >不重要
+```
 
-
+```bash
 80.conf
 
 
@@ -97,7 +100,9 @@ server
     }
 
 
+```
 
+```bash
 
 443.conf
 
@@ -124,7 +129,9 @@ server {
         }
     }
 	
-	
+```
+
+```bash	
 官方配置方式 nginx
 
 server {
@@ -161,7 +168,9 @@ server {
 
   #add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
 }	
-	
+	```
+
+	```bash
 	
 80 443同一个配置 官方配置方式
 
@@ -231,7 +240,9 @@ server {
  
 }
 	
-	
+```
+
+```bash
 	=========caddy=============
 	
 	如不用NGINX申请证书
@@ -244,7 +255,9 @@ iptables -I INPUT -m state --state NEW -m udp -p udp --dport 443 -j ACCEPT
 iptables -D INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT
 iptables -D INPUT -m state --state NEW -m udp -p udp --dport 443 -j ACCEPT
 	
-	
+```
+
+```bash	
 	CADDY日 志：/tmp/caddy.log
 	
 	
@@ -267,7 +280,9 @@ vi /usr/local/caddy/Caddyfile
 Caddy配置文件位置：/usr/local/caddy/Caddyfile
 Caddy自动申请SSL证书位置：/.caddy/acme/acme-v01.api.letsencrypt.org/sites/xxx.xxx(域名)/
 
+```
 
+```bash
 用233脚本 CADDY配置
 	
 cl.vvppmm.xyz {
@@ -282,7 +297,9 @@ timeouts none
         websocket
     }
 }
+```
 
+```bash
 	v2ray推官方CADDY配置
 	
 vip.vvppmm.xyz
@@ -300,6 +317,9 @@ timeouts none
     }
 }
 
+```
+
+```bash
 
 =============================锐速==================
 
@@ -307,9 +327,11 @@ yum install -y net-tools
 
 wget --no-check-certificate -qO /tmp/appex.sh "https://raw.githubusercontent.com/0oVicero0/serverSpeeder_Install/master/appex.sh" && bash /tmp/appex.sh 'install'
 	
-	
-	
+
 	====================================
+```
+
+```bash
 	
 	bash <(curl -L -s https://install.direct/go.sh)
 
@@ -328,7 +350,9 @@ wget --no-check-certificate -qO /tmp/appex.sh "https://raw.githubusercontent.com
     之后可以使用 service v2ray start|stop|status|reload|restart|force-reload 控制 V2Ray 的运行。
 
 	
-	
+	```
+
+```bash
 	
 	
 	v2ray服务配置文件
@@ -459,24 +483,9 @@ wget --no-check-certificate -qO /tmp/appex.sh "https://raw.githubusercontent.com
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+```
+
+```bash
 	
 	
 	
@@ -624,6 +633,9 @@ wget --no-check-certificate -qO /tmp/appex.sh "https://raw.githubusercontent.com
 	}
 }
 
+```
+
+```bash
 
 ======================修改自233blog配置的自建文件=============
 
@@ -789,6 +801,10 @@ wget --no-check-certificate -qO /tmp/appex.sh "https://raw.githubusercontent.com
 	}
 }
 
+
+```
+
+```bash
 =================mkcp============
 
 {
@@ -911,3 +927,47 @@ wget --no-check-certificate -qO /tmp/appex.sh "https://raw.githubusercontent.com
 		}
 	}
 }
+
+```
+
+
+
+
+trojan 安装
+
+
+```bash
+
+sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+sed -i 's/SELINUX=permissive/SELINUX=disabled/g' /etc/selinux/config
+
+wget https://github.com/trojan-gfw/trojan/releases/download/v1.13.0/trojan-1.13.0-linux-amd64.tar.xz
+
+tar xf trojan-1.13.0-linux-amd64.tar.xz -C /etc/
+
+vi /etc/trojan/config.json
+
+
+cat > /lib/systemd/system/trojan.service <<-EOF
+[Unit]  
+Description=trojan  
+After=network.target  
+   
+[Service]  
+Type=simple  
+PIDFile=/etc/trojan/trojan.pid
+ExecStart=/etc/trojan/trojan -c "/etc/trojan/config.json"  
+ExecReload=  
+ExecStop=/etc/trojan/trojan  
+PrivateTmp=true  
+   
+[Install]  
+WantedBy=multi-user.target
+EOF
+
+chmod +x /usr/lib/systemd/system/trojan.service
+systemctl start trojan.service
+systemctl status trojan.service
+systemctl enable trojan.service
+
+```
