@@ -44,7 +44,7 @@ systemctl enable nginx.service
 
 systemctl restart nginx.service   重启NG
 
-
+```bash
 
 1、firewalld的基本使用
 启动： systemctl start firewalld
@@ -52,7 +52,7 @@ systemctl restart nginx.service   重启NG
 查看状态： systemctl status firewalld 
 开机禁用  ： systemctl disable firewalld
 开机启用  ： systemctl enable firewalld
-
+```
 
 =================================================
 ```bash
@@ -168,9 +168,10 @@ server {
 
   #add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
 }	
-	```
+```
 
-	```bash
+
+```bash
 	
 80 443同一个配置 官方配置方式
 
@@ -350,7 +351,9 @@ wget --no-check-certificate -qO /tmp/appex.sh "https://raw.githubusercontent.com
     之后可以使用 service v2ray start|stop|status|reload|restart|force-reload 控制 V2Ray 的运行。
 
 	
-	```
+```
+
+
 
 ```bash
 	
@@ -966,6 +969,8 @@ WantedBy=multi-user.target
 EOF
 
 chmod +x /usr/lib/systemd/system/trojan.service
+chmod +x /lib/systemd/system/trojan.service
+chown -R root:root /etc/trojan
 systemctl start trojan.service
 systemctl status trojan.service
 systemctl enable trojan.service
