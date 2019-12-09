@@ -935,6 +935,89 @@ wget --no-check-certificate -qO /tmp/appex.sh "https://raw.githubusercontent.com
 
 
 
+```bash
+trojan v2ray nginx共用配置 conf
+
+server
+    {
+        listen 80;
+	server_name 666.vvppmm.xyz;
+        index index.html index.htm;
+        root  /home/666.vvppmm.xyz;
+
+        location / {
+        proxy_pass https://www.asmag.com;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        }
+
+
+	location /666api {
+      if ($http_upgrade != "websocket") { 
+          return 403;
+      }
+      proxy_redirect off;
+      proxy_pass http://127.0.0.1:54123;
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection "upgrade";
+      proxy_set_header Host $host;
+      # Show real IP in v2ray access.log
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location ~ /.well-known {
+            allow all;
+    }
+
+    location ~ .*\.(txt)$   
+    {
+        expires      30d;
+
+    }
+     
+	 location ~ /\.
+    {
+            deny all;
+     }
+
+    }
+
+
+caddy 共用需先申请好证书
+
+:80 {
+root /var/www/site
+gzip
+browse
+proxy / http://majuredata.com
+proxy /666api localhost:54123 {
+     websocket
+     header_upstream -Origin
+     }
+}
+
+===========trojan 官方脚本=========
+
+
+sudo bash -c "$(wget -O- https://raw.githubusercontent.com/trojan-gfw/trojan-quickstart/master/trojan-quickstart.sh)"
+
+
+config文件所在
+
+/usr/local/etc/trojan
+
+vi /usr/local/etc/trojan/config.json
+
+trojan重启      systemctl restart trojan.service
+trojan状态      systemctl status trojan.service
+trojan开机启动  systemctl enable trojan.service
+trojan停止      systemctl stop trojan.service
+
+```
+
 
 trojan 安装
 
@@ -944,6 +1027,7 @@ trojan 安装
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
 sed -i 's/SELINUX=permissive/SELINUX=disabled/g' /etc/selinux/config
 
+注：可下载不同架构二进制包
 wget https://github.com/trojan-gfw/trojan/releases/download/v1.13.0/trojan-1.13.0-linux-amd64.tar.xz
 
 tar xf trojan-1.13.0-linux-amd64.tar.xz -C /etc/
