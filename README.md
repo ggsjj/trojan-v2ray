@@ -261,8 +261,6 @@ iptables -D INPUT -m state --state NEW -m udp -p udp --dport 443 -j ACCEPT
 ```bash	
 	CADDY日 志：/tmp/caddy.log
 	
-	
-	
 wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/caddy_install.sh && chmod +x caddy_install.sh && bash caddy_install.sh
 	
 
@@ -327,9 +325,10 @@ timeouts none
 yum install -y net-tools
 
 wget --no-check-certificate -qO /tmp/appex.sh "https://raw.githubusercontent.com/0oVicero0/serverSpeeder_Install/master/appex.sh" && bash /tmp/appex.sh 'install'
-	
 
-	====================================
+/appex/bin/serverSpeeder.sh status
+
+====================================
 ```
 
 ```bash
@@ -1023,7 +1022,7 @@ trojan 安装
 
 
 ```bash
-
+注：在cnetos7  上要改
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
 sed -i 's/SELINUX=permissive/SELINUX=disabled/g' /etc/selinux/config
 
