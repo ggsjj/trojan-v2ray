@@ -932,6 +932,170 @@ wget --no-check-certificate -qO /tmp/appex.sh "https://raw.githubusercontent.com
 
 ```
 
+===============
+
+
+```bash
+{
+	"log": {
+		"access": "/var/log/v2ray/access.log",
+		"error": "/var/log/v2ray/error.log",
+		"loglevel": "warning"
+	},
+	
+	"inbounds": [
+	{
+			"port": 54123, 
+			"protocol": "vmess",
+			"settings": {
+				"clients": [
+					{
+						"id": "bd533185-d5d4-4cf9-a82e-43df4faffed3",
+						"level": 1,
+						"alterId": 168
+					}       ]
+			            },
+            "streamSettings": {
+                "network": "ws",
+             "wsSettings": {
+                    "path": "/gogapi"
+					       } 
+                              }
+	},
+
+		{
+			"port": 5223,
+			"protocol": "vmess",
+			"settings": {
+				"clients": [
+					{
+						"id": "23c518b6-f4f7-4e4b-bc68-b853cbf6e91e",
+						"level": 1,
+						"alterId": 233
+					}
+				          ]
+			            },
+			"streamSettings": {
+				"network": "mkcp",
+				"kcpSettings": {
+					"header": {
+						"type": "wechat-video"
+					          }
+				             }
+		                       }
+		
+			
+		},    #多端口  多用户在"inbounds": [ {ws},{kcp},{ws} ]  ws:配置内容
+		
+		   {
+			"port": 5224,
+			"protocol": "vmess",
+			"settings": {
+				"clients": [
+					{
+						"id": "23c518b6-f4f7-4e4b-bc68-b853cbf6e91e",
+						"level": 1,
+						"alterId": 233
+					}
+				          ]
+			            },
+			"streamSettings": {
+				"network": "mkcp",
+				"kcpSettings": {
+					"header": {
+						"type": "wechat-video"
+					          }
+				             }
+		                       }
+		
+			
+		}	
+		
+
+	
+	],
+	
+	"outbounds": [
+		{
+			"protocol": "freedom",
+			"settings": {}
+		},
+		{
+			"protocol": "blackhole",
+			"settings": {},
+			"tag": "blocked"
+		},
+		{
+			"protocol": "freedom",
+			"settings": {},
+			"tag": "direct"
+		}
+
+	],
+	"dns": {
+		"server": [
+			"1.1.1.1",
+			"1.0.0.1",
+			"8.8.8.8",
+			"8.8.4.4",
+			"localhost"
+		]
+	},
+	"routing": {
+		"domainStrategy": "IPOnDemand",
+		"rules": [
+			{
+				"type": "field",
+				"ip": [
+					"0.0.0.0/8",
+					"10.0.0.0/8",
+					"100.64.0.0/10",
+					"127.0.0.0/8",
+					"169.254.0.0/16",
+					"172.16.0.0/12",
+					"192.0.0.0/24",
+					"192.0.2.0/24",
+					"192.168.0.0/16",
+					"198.18.0.0/15",
+					"198.51.100.0/24",
+					"203.0.113.0/24",
+					"::1/128",
+					"fc00::/7",
+					"fe80::/10"
+				],
+				"outboundTag": "blocked"
+			},
+			{
+				"type": "field",
+				"inboundTag": ["tg-in"],
+				"outboundTag": "tg-out"
+			}
+			,
+			{
+				"type": "field",
+				"domain": [
+				"domain:aaaa.com",
+				"domain:bbbb.com" 
+				],
+				"outboundTag": "blocked"
+			}
+		]
+	},
+	"transport": {
+		"kcpSettings": {
+            "uplinkCapacity": 100,
+            "downlinkCapacity": 100,
+            "congestion": true
+        },
+		"sockopt": {
+			"tcpFastOpen": true
+		}
+	}
+}
+
+```
+
+
 
 
 ```bash
